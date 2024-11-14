@@ -11920,32 +11920,31 @@ async function getTabID() {
   let [tab] = await chrome.tabs.query(queryOptions);
   return tab?.id || 0;
 }
-function getSelection() {
-  return window.getSelection()?.toString() || "";
-}
 chrome.commands.onCommand.addListener(async (command) => {
   if (command === "convert_html_to_markdown") {
-    chrome.scripting.executeScript({
-      target: { tabId: await getTabID() },
-      func: getSelection
-    }).then(async (injectionResults) => {
-      for (const { frameId, result } of injectionResults) {
-        const selection = result;
-        if (!selection) {
-          console.error("No selection found on the page.");
-          return;
-        }
-        const container = document.createElement("div");
-        container.innerHTML = selection;
-        const markdownContent = await convertHTMLToMarkdown(container.innerHTML);
-        if (markdownContent) {
-          await navigator.clipboard.writeText(markdownContent);
-          console.log("Clipboard updated with Markdown content.");
-        } else {
-          console.error("Conversion returned null, check the HTML content.");
-        }
+    try {
+      const tabId = await getTabID();
+      console.log(tabId);
+      const response = await chrome.tabs.sendMessage(tabId, {
+        type: "getSelectionHtml"
+      });
+      console.log(response);
+      if (!response) {
+        console.warn("No response from the content script.");
+        return;
       }
-    });
+      const container = document.createElement("div");
+      container.innerHTML = response;
+      const markdownContent = await convertHTMLToMarkdown(container.innerHTML);
+      if (markdownContent) {
+        await navigator.clipboard.writeText(markdownContent);
+        console.log("Clipboard updated with Markdown content.", markdownContent);
+      } else {
+        console.error("Conversion returned null, check the HTML content.");
+      }
+    } catch (error2) {
+      console.warn("Error, either selection is empty or conversion failed:", error2);
+    }
   }
 });
 //# sourceMappingURL=background.mjs.map

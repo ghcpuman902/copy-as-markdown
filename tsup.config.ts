@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: ["src/**/*.ts"],
+  entry: ["src/**/*.ts", "!src/content-script.js"],
   outDir: "dist",
   format: ["esm"],
   target: 'esnext',

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsup src --out-dir dist --format esm --clean",
+    "postbuild": "node copyContentScript.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

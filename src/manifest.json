@@ -17,5 +17,11 @@
       },
       "description": "Convert clipboard HTML to Markdown"
     }
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"]
+    }
+  ]
 }
