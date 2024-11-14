@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Copy as Markdown 3",
+  "version": "1.0",
+  "description": "Convert clipboard HTML to Markdown",
+  "permissions": ["clipboardRead", "clipboardWrite"],
+  "background": {
+    "service_worker": "background.mjs",
+    "type": "module"
+  },
+  "commands": {
+    "convert_html_to_markdown": {
+      "suggested_key": {
+        "default": "Alt+C",
+        "mac": "Alt+C",
+        "windows": "Alt+C"
+      },
+      "description": "Convert clipboard HTML to Markdown"
+    }
+  }
+}
