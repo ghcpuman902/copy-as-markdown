@@ -19,3 +19,8 @@ build/
 *.swp
 *.swo
 .DS_Store
+
+dist.crx
+dist.pem
+
+clipboardToMarkdown*.zip
