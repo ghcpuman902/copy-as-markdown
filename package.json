@@ -1,11 +1,11 @@
 {
-  "name": "clipboardToMarkdown",
+  "name": "copyAsMarkdown",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "build": "tsup src --out-dir dist --format esm --clean",
-    "postbuild": "node copyContentScript.js",
+    "postbuild": "node copyImages.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,19 +14,16 @@
   "dependencies": {
     "chrome-types": "^0.1.320",
     "jsdom": "^25.0.1",
-    "next": "^15.0.3",
     "prosemirror-markdown": "^1.13.1",
     "prosemirror-model": "^1.23.0",
     "prosemirror-schema-basic": "^1.2.3",
     "prosemirror-schema-list": "^1.4.1",
-    "prosemirror-tables": "^1.6.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "prosemirror-tables": "^1.6.1"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.280",
+    "@types/jsdom": "^21.1.7",
     "@types/node": "22.9.0",
-    "@types/react": "18.3.12",
     "esbuild": "^0.24.0",
     "tsup": "^8.3.5",
     "typescript": "5.6.3"

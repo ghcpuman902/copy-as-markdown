@@ -11900,13 +11900,11 @@ var customMarkdownSerializer = new MarkdownSerializer(
   },
   defaultMarkdownSerializer.marks
 );
-async function convertHTMLToMarkdown(htmlContent) {
+async function convertHTMLToMarkdown(htmlDOM) {
   try {
-    const container = document.createElement("div");
-    container.innerHTML = htmlContent;
     const domParser = DOMParser.fromSchema(mySchema);
-    const prosemirrorDoc = domParser.parse(container);
-    const markdownOutput = customMarkdownSerializer.serialize(prosemirrorDoc).replace(/\n\n\[END OF CELL\]/g, "");
+    const prosemirrorDoc = domParser.parse(htmlDOM);
+    const markdownOutput = customMarkdownSerializer.serialize(prosemirrorDoc);
     return markdownOutput;
   } catch (error2) {
     console.error("Error converting HTML to Markdown:", error2);

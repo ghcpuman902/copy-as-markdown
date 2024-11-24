@@ -1,8 +1,16 @@
-import { DOMParser, Schema, Node as ProseMirrorNode } from "prosemirror-model";
+import { DOMParser, Schema, Node as ProseMirrorNode, type Node } from "prosemirror-model";
 import { schema } from "prosemirror-schema-basic";
 import { addListNodes } from "prosemirror-schema-list";
 import { MarkdownSerializer, defaultMarkdownSerializer, MarkdownSerializerState } from "prosemirror-markdown";
 import { tableNodes } from "prosemirror-tables";
+
+// TODOS
+// - for links try to convert relative links to absolute links 
+// e.g. 
+// ## [Useful Links](#useful-links) -> https://nextjs.org/docs/messages/version-staleness#useful-links
+// * [Upgrade guide](/docs/pages/building-your-application/upgrading) https://nextjs.org/docs/pages/building-your-application/upgrading
+// - 
+
 
 // Define the custom schema
 const mySchema = new Schema({
@@ -77,21 +85,18 @@ const customMarkdownSerializer = new MarkdownSerializer(
 
 /**
  * Convert HTML content to Markdown.
- * @param {string} htmlContent - The HTML content to be converted.
+ * @param {string} htmlDOM - The HTML content to be converted.
  * @returns {Promise<string | null>} - The converted Markdown content.
  */
-export async function convertHTMLToMarkdown(htmlContent: string): Promise<string | null> {
+export async function convertHTMLToMarkdown(htmlDOM: Node): Promise<string | null> {
     try {
-        // Parse HTML to a DOM structure in the browser
-        const container = document.createElement('div');
-        container.innerHTML = htmlContent;
 
         // Parse DOM to ProseMirror Node using the custom schema
         const domParser = DOMParser.fromSchema(mySchema);
-        const prosemirrorDoc = domParser.parse(container);
+        const prosemirrorDoc = domParser.parse(htmlDOM as unknown as HTMLElement);
 
         // Convert ProseMirror Node to Markdown using the custom serializer
-        const markdownOutput = customMarkdownSerializer.serialize(prosemirrorDoc).replace(/\n\n\[END OF CELL\]/g, '');
+        const markdownOutput = customMarkdownSerializer.serialize(prosemirrorDoc);
 
         return markdownOutput;
     } catch (error) {
